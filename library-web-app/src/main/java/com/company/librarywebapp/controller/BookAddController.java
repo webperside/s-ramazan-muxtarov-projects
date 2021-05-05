@@ -1,7 +1,8 @@
-package com.company.librarywebapp;
+package com.company.librarywebapp.controller;
 
 import com.company.dao.Context;
 import com.company.dao.inter.BookDaoInter;
+import com.company.librarywebapp.util.BookUtil;
 import com.company.models.Book;
 
 import javax.servlet.ServletException;
@@ -21,15 +22,9 @@ public class BookAddController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String description = req.getParameter("description");
-        String author = req.getParameter("author");
-        Float price = Float.valueOf(req.getParameter("price"));
-        Integer stockCount = Integer.valueOf(req.getParameter("stockCount"));
-
         BookDaoInter bookDaoInter = Context.getBookDao();
 
-        Book book = new Book(null, name, description,author, price, stockCount);
+        Book book = BookUtil.createBookFromRequest(req);
 
         bookDaoInter.save(book);
 

@@ -1,4 +1,4 @@
-package com.company.librarywebapp;
+package com.company.librarywebapp.controller;
 
 import com.company.dao.Context;
 import com.company.dao.inter.BookDaoInter;

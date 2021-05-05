@@ -8,6 +8,8 @@ public interface UserDaoInter {
 
     List<User> findAll();
 
+    User findByEmailAndPassword(String email, String password);
+
     User findById(Integer id);
 
     boolean save(User user);

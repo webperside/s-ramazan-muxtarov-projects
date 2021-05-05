@@ -1,4 +1,4 @@
-package com.company.librarywebapp;
+package com.company.librarywebapp.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

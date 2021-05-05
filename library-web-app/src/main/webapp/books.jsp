@@ -1,7 +1,8 @@
 <%@ page import="com.company.dao.inter.BookDaoInter" %>
 <%@ page import="com.company.dao.Context" %>
 <%@ page import="com.company.models.Book" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.company.models.User" %><%--
   Created by IntelliJ IDEA.
   User: hamid
   Date: 03.05.21
@@ -18,8 +19,10 @@
 <body>
 <%
     List<Book> books =(List<Book>) request.getAttribute("books");
+    User user = (User) request.getAttribute("loggedInUser");
 %>
 <div class="container">
+    <h2>Welcome, <%=user.getName() + " " + user.getSurname()%></h2>
     <table class="table">
         <thead>
         <tr>
