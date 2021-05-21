@@ -18,8 +18,9 @@ public class BookController {
     private final BookService bookService;
 
     @RequestMapping(value = "/books", method= RequestMethod.GET)
-    public ModelAndView books(){
-        List<Book> books = bookService.findAll();
+    public ModelAndView books(@RequestParam(value = "search", required = false) String search){
+
+        List<Book> books = bookService.findAll(search);
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("books");
@@ -49,8 +50,13 @@ public class BookController {
 
     @RequestMapping(value = "/book-edit", method= RequestMethod.POST)
     public ModelAndView bookEditPost(Book book){
-        bookService.save(book);
-        return new ModelAndView("redirect:/books");
+        String url;
+        if (bookService.update(book)) {
+            url = "redirect:/books";
+        } else {
+            url = "redirect:/books?error=Book not found";
+        }
+        return new ModelAndView(url);
     }
 
     @RequestMapping(value = "/book-delete", method= RequestMethod.GET)
@@ -64,8 +70,13 @@ public class BookController {
 
     @RequestMapping(value = "/book-delete", method= RequestMethod.POST)
     public ModelAndView bookDeletePost(Integer id){
-        bookService.remove(id);
-        return new ModelAndView("redirect:/books");
+        String url;
+        if (bookService.remove(id)) {
+            url = "redirect:/books";
+        } else {
+            url = "redirect:/books?error=Book not found";
+        }
+        return new ModelAndView(url);
     }
 
 //    @RequestMapping(value = "/book-add", method= RequestMethod.POST)

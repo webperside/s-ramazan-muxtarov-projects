@@ -17,7 +17,7 @@
     Book book =(Book) request.getAttribute("book");
 %>
 <div class="container">
-    <form method="post" action="book-edit"> http://localhost:8080/library/books
+    <form method="post" action="book-edit">
         <div class="mb-3">
             <label for="bookName" class="form-label">Name</label>
             <input type="text" class="form-control" id="bookName" name="name" value="<%=book.getName()%>">
@@ -40,6 +40,7 @@
         </div>
         <input name="id" value="<%=book.getId()%>" hidden>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="/books" class="btn btn-warning" role="button" >Cancel</a>
     </form>
 </div>
 </body>

@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface BookService {
 
-    List<Book> findAll();
+    List<Book> findAll(String search);
 
     boolean save(Book book);
+
+    boolean update(Book book);
 
     Book findById(Integer id);
 
