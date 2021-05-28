@@ -31,6 +31,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Role role;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserBook> userBookList;
 

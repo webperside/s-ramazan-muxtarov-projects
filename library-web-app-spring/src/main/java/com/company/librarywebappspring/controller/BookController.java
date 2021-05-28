@@ -1,8 +1,11 @@
 package com.company.librarywebappspring.controller;
 
 import com.company.librarywebappspring.models.Book;
+import com.company.librarywebappspring.security.CustomUserDetail;
 import com.company.librarywebappspring.service.inter.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,11 +23,20 @@ public class BookController {
     @RequestMapping(value = "/books", method= RequestMethod.GET)
     public ModelAndView books(@RequestParam(value = "search", required = false) String search){
 
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String fullName = null;
+        if(principal instanceof UserDetails){
+            CustomUserDetail userDetail = (CustomUserDetail) principal;
+            fullName = userDetail.getUser().getName() + " " + userDetail.getUser().getSurname();
+        }
+
         List<Book> books = bookService.findAll(search);
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("books");
         mv.addObject("books",books);
+        mv.addObject("userLoggedIn",fullName);
         return mv;
     }
 

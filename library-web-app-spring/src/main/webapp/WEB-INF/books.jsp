@@ -15,6 +15,9 @@
 
 <body>
 <div class="container">
+    <c:if test = "${userLoggedIn != null}">
+        <h2>Welcome, <c:out value = "${userLoggedIn}"/></h2>>
+    </c:if>
     <form action="books" method="GET">
         <div class="mb-3">
             <label for="bookName" class="form-label">Key</label>
