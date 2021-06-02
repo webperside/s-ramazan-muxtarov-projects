@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/books").permitAll()
                 .antMatchers("/book-add","/book-edit","/book-delete").hasAuthority("ADMIN")
+                .antMatchers("/buy-book","/user-profile").authenticated()
                 .antMatchers("/user-register").anonymous()
                 .and().formLogin().defaultSuccessUrl("/books")
                 .and().logout().logoutSuccessUrl("/login")

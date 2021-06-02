@@ -1,18 +1,23 @@
 package com.company.librarywebappspring.controller;
 
 import com.company.librarywebappspring.models.Book;
+import com.company.librarywebappspring.models.User;
 import com.company.librarywebappspring.security.CustomUserDetail;
 import com.company.librarywebappspring.service.inter.BookService;
+import com.company.librarywebappspring.util.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+
+import static com.company.librarywebappspring.util.UserUtils.currentUser;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,15 +26,15 @@ public class BookController {
     private final BookService bookService;
 
     @RequestMapping(value = "/books", method= RequestMethod.GET)
-    public ModelAndView books(@RequestParam(value = "search", required = false) String search){
+    public ModelAndView books(@RequestParam(value = "search", required = false) String search,
+                              @RequestParam(value = "error", required = false) String error,
+                              @RequestParam(value = "msg", required = false) String msg){
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = currentUser();
 
         String fullName = null;
-        if(principal instanceof UserDetails){
-            CustomUserDetail userDetail = (CustomUserDetail) principal;
-            fullName = userDetail.getUser().getName() + " " + userDetail.getUser().getSurname();
-        }
+
+        if(user != null) fullName = user.getName() + " " + user.getSurname();
 
         List<Book> books = bookService.findAll(search);
 
@@ -37,6 +42,9 @@ public class BookController {
         mv.setViewName("books");
         mv.addObject("books",books);
         mv.addObject("userLoggedIn",fullName);
+        mv.addObject("isAdmin", UserUtils.isAdmin());
+        mv.addObject("error",error);
+        mv.addObject("msg",msg);
         return mv;
     }
 
@@ -54,9 +62,11 @@ public class BookController {
     @RequestMapping(value = "/book-edit", method= RequestMethod.GET)
     public ModelAndView bookEditGet(@RequestParam(name="id") Integer id,
                                     ModelAndView mv){
+
         Book book = bookService.findById(id);
         mv.setViewName("book-edit");
         mv.addObject("book",book);
+
         return mv;
     }
 
@@ -85,6 +95,26 @@ public class BookController {
         String url;
         if (bookService.remove(id)) {
             url = "redirect:/books";
+        } else {
+            url = "redirect:/books?error=Book not found";
+        }
+        return new ModelAndView(url);
+    }
+
+    @RequestMapping(value = "/buy-book", method= RequestMethod.GET)
+    public ModelAndView buyBookGet(@RequestParam(name="id") Integer id,
+                                      ModelAndView mv){
+        Book book = bookService.findById(id);
+        mv.setViewName("buy-book");
+        mv.addObject("book",book);
+        return mv;
+    }
+
+    @PostMapping("/buy-book")
+    public ModelAndView buyBookPost(Integer id){
+        String url;
+        if(bookService.buyBook(id)){
+            url = "redirect:/books?msg=Operation successful";
         } else {
             url = "redirect:/books?error=Book not found";
         }

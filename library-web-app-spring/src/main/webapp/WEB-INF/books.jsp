@@ -16,7 +16,13 @@
 <body>
 <div class="container">
     <c:if test = "${userLoggedIn != null}">
-        <h2>Welcome, <c:out value = "${userLoggedIn}"/></h2>>
+        <h2>Welcome, <c:out value = "${userLoggedIn}"/></h2>
+    </c:if>
+    <c:if test = "${error != null}">
+        <h3>Error during operation : <c:out value = "${error}"/></h3>
+    </c:if>
+    <c:if test = "${msg != null}">
+        <h3>Message : <c:out value = "${msg}"/></h3>
     </c:if>
     <form action="books" method="GET">
         <div class="mb-3">
@@ -41,13 +47,19 @@
                 <td>${book.author}</td>
                 <td>${book.price}</td>
                 <td>
-                    <a href="/book-edit?id=<c:out value="${book.id}"/>" class="btn btn-warning" role="button"
+                    <c:if test = "${isAdmin}">
+                        <a href="/book-edit?id=<c:out value="${book.id}"/>" class="btn btn-warning" role="button"
+                        >
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="/book-delete?id=<c:out value="${book.id}"/>" class="btn btn-danger" role="button"
+                        >
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </c:if>
+                    <a href="/buy-book?id=<c:out value="${book.id}"/>" class="btn btn-info" role="button"
                     >
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a href="/book-delete?id=<c:out value="${book.id}"/>" class="btn btn-danger" role="button"
-                    >
-                        <i class="fas fa-trash"></i>
+                        <i class="fas fa-shopping-cart"></i>
                     </a>
                 </td>
             </tr>
