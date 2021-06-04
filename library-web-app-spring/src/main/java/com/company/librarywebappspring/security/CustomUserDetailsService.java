@@ -35,7 +35,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                     user.getEmail(),
                     user.getPassword(),
                     roles
-            );
+            ); //digital ocean
+            // browser-------->server
+            // browser-------->server(tomcat)
+            // browser(/books)-------->server
         } else {
             throw new UsernameNotFoundException(String.format("%s user not found", s));
         }

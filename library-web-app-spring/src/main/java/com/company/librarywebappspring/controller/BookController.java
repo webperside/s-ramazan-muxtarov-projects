@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -104,6 +101,20 @@ public class BookController {
     @RequestMapping(value = "/buy-book", method= RequestMethod.GET)
     public ModelAndView buyBookGet(@RequestParam(name="id") Integer id,
                                       ModelAndView mv){
+        Book book = bookService.findById(id);
+        mv.setViewName("buy-book");
+        mv.addObject("book",book);
+        return mv;
+    }
+
+    @RequestMapping(value = "/buy-book-path-variable/{id}", method= RequestMethod.GET)
+    public ModelAndView buyBookGetPathVariable(@PathVariable(name="id") Integer id,
+                                   ModelAndView mv){
+
+        // @RequestParam vs @PathVariable
+        // /books?id=1
+        // /books/1
+
         Book book = bookService.findById(id);
         mv.setViewName("buy-book");
         mv.addObject("book",book);

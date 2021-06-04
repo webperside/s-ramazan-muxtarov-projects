@@ -3,6 +3,7 @@ package com.company.librarywebappspring.util;
 import com.company.librarywebappspring.models.Role;
 import com.company.librarywebappspring.models.User;
 import com.company.librarywebappspring.security.CustomUserDetail;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
