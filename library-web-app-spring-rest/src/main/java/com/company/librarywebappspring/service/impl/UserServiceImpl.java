@@ -1,5 +1,6 @@
 package com.company.librarywebappspring.service.impl;
 
+import com.company.librarywebappspring.dto.users.UserCreateDto;
 import com.company.librarywebappspring.models.Role;
 import com.company.librarywebappspring.models.User;
 import com.company.librarywebappspring.repository.RoleRepository;
@@ -17,11 +18,20 @@ public class UserServiceImpl implements UserService {
 //    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public boolean register(User user) {
+    public boolean register(UserCreateDto userDto) {
         Role role = roleRepository.findById(2).orElse(null);
 
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(role);
+
+        User user = User.builder()
+                .email(userDto.getEmail())
+                .name(userDto.getName())
+                .password(userDto.getPassword())
+                .surname(userDto.getSurname())
+                .role(role)
+                .build();
+
+//        user.setRole(role);
 
         userRepository.save(user);
         sendEmail(user.getEmail());

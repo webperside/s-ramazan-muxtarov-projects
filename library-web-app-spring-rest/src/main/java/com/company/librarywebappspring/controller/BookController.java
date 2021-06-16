@@ -1,6 +1,8 @@
 package com.company.librarywebappspring.controller;
 
+import com.company.librarywebappspring.dto.ResponseDto;
 import com.company.librarywebappspring.dto.books.BookByIdDto;
+import com.company.librarywebappspring.dto.books.BookCreateUpdateDto;
 import com.company.librarywebappspring.dto.books.BookListDto;
 import com.company.librarywebappspring.service.inter.BookService;
 import lombok.RequiredArgsConstructor;
@@ -13,29 +15,37 @@ import java.util.List;
 @RequestMapping("/books")
 public class BookController {
 
+    // /books/1 (GET, PUT, POST, DELETE)
+
     private final BookService bookService;
 
     @GetMapping
-    public List<BookListDto> books(@RequestParam(value = "search", required = false) String search){
-        return bookService.findAll(search);
+    public ResponseDto books(@RequestParam(value = "search", required = false) String search){
+        List<BookListDto> books = bookService.findAll(search);
+        return ResponseDto.builder().object(books).build();
     }
 
     @GetMapping("/{bookId}")
-    public BookByIdDto getById(@PathVariable("bookId") Integer bookId){
-        return bookService.findById(bookId);
+    public ResponseDto getById(@PathVariable("bookId") Integer bookId){
+        BookByIdDto bookDto = bookService.findById(bookId);
+        return ResponseDto.builder().object(bookDto).build();
     }
 
+    @PostMapping
+    public void save(@RequestBody BookCreateUpdateDto createUpdateDto){
+        bookService.save(createUpdateDto);
+    }
 
-//    @RequestMapping(value = "/book-add", method= RequestMethod.GET)
-//    public ModelAndView bookAddGet(){
-//        return new ModelAndView("book-add");
-//    }
-//
-//    @RequestMapping(value = "/book-add", method= RequestMethod.POST)
-//    public ModelAndView bookAddPost(Book book){
-//        bookService.save(book);
-//        return new ModelAndView("redirect:/books");
-//    }
+    @PutMapping("/{bookId}")
+    public void update(@PathVariable("bookId") Integer bookId, @RequestBody BookCreateUpdateDto bookCreateUpdateDto){
+        bookService.update(bookId, bookCreateUpdateDto);
+    }
+
+    @DeleteMapping("/{bookId}")
+    public void delete(@PathVariable("bookId") Integer bookId){
+        bookService.remove(bookId);
+    }
+
 //
 //    @RequestMapping(value = "/book-edit", method= RequestMethod.GET)
 //    public ModelAndView bookEditGet(@RequestParam(name="id") Integer id,

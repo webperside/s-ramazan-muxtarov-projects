@@ -1,5 +1,6 @@
 package com.company.librarywebappspring.controller;
 
+import com.company.librarywebappspring.dto.users.UserCreateDto;
 import com.company.librarywebappspring.models.User;
 import com.company.librarywebappspring.models.UserBook;
 import com.company.librarywebappspring.service.inter.UserBookService;
@@ -7,20 +8,24 @@ import com.company.librarywebappspring.service.inter.UserService;
 import com.company.librarywebappspring.util.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
+@RequestMapping("/users")
 public class UserController {
 
-//    private final UserService userService;
+    private final UserService userService;
 //    private final UserBookService userBookService;
+
+    @PostMapping("/register")
+    public void register(@RequestBody UserCreateDto userCreateDto){
+        userService.register(userCreateDto);
+    }
+
 //
 ////    @RequestMapping(value = "/user-register", method= RequestMethod.GET)
 //    @GetMapping("/user-register")

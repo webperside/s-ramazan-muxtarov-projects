@@ -1,6 +1,7 @@
 package com.company.librarywebappspring.service.impl;
 
 import com.company.librarywebappspring.dto.books.BookByIdDto;
+import com.company.librarywebappspring.dto.books.BookCreateUpdateDto;
 import com.company.librarywebappspring.dto.books.BookListDto;
 import com.company.librarywebappspring.models.Book;
 import com.company.librarywebappspring.models.User;
@@ -42,18 +43,32 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean save(Book book) {
+    public boolean save(BookCreateUpdateDto bookDto) {
+        Book book = Book.builder()
+                .name(bookDto.getName())
+                .description(bookDto.getDescription())
+                .author(bookDto.getAuthor())
+                .stockCount(bookDto.getStockCount())
+                .price(bookDto.getPrice())
+                .build();
+
         bookRepository.save(book);
         return true;
     }
 
     @Override
-    public boolean update(Book book) {
-        if(bookRepository.existsById(book.getId())){
-            bookRepository.save(book);
-            return true;
-        }
-        return false;
+    public boolean update(Integer bookId, BookCreateUpdateDto bookDto) {
+        Book book = retrieveBookById(bookId);
+
+        book.setName(bookDto.getName());
+        book.setStockCount(bookDto.getStockCount());
+        book.setAuthor(bookDto.getAuthor());
+        book.setDescription(bookDto.getDescription());
+        book.setPrice(bookDto.getPrice());
+
+        bookRepository.save(book);
+
+        return true;
     }
 
     @Override

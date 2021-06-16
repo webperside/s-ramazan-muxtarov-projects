@@ -1,6 +1,7 @@
 package com.company.librarywebappspring.service.inter;
 
 import com.company.librarywebappspring.dto.books.BookByIdDto;
+import com.company.librarywebappspring.dto.books.BookCreateUpdateDto;
 import com.company.librarywebappspring.dto.books.BookListDto;
 import com.company.librarywebappspring.models.Book;
 
@@ -10,9 +11,9 @@ public interface BookService {
 
     List<BookListDto> findAll(String search);
 
-    boolean save(Book book);
+    boolean save(BookCreateUpdateDto book);
 
-    boolean update(Book book);
+    boolean update(Integer bookId, BookCreateUpdateDto book);
 
     BookByIdDto findById(Integer id);
 
