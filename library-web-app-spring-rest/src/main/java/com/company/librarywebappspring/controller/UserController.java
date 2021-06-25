@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @RestController
@@ -20,6 +21,16 @@ public class UserController {
 
     private final UserService userService;
 //    private final UserBookService userBookService;
+
+//    @PostConstruct
+//    public void tempUser(){
+//        UserCreateDto userCreateDto = new UserCreateDto();
+//        userCreateDto.setEmail("hamid@gmail.com");
+//        userCreateDto.setPassword("12345");
+//        userCreateDto.setName("H");
+//        userCreateDto.setSurname("S");
+//        userService.register(userCreateDto);
+//    }
 
     @PostMapping("/register")
     public void register(@RequestBody UserCreateDto userCreateDto){

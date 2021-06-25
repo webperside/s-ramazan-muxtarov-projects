@@ -7,6 +7,7 @@ import com.company.librarywebappspring.repository.RoleRepository;
 import com.company.librarywebappspring.repository.UserRepository;
 import com.company.librarywebappspring.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,21 +16,22 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public boolean register(UserCreateDto userDto) {
         Role role = roleRepository.findById(2).orElse(null);
 
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         User user = User.builder()
                 .email(userDto.getEmail())
                 .name(userDto.getName())
-                .password(userDto.getPassword())
+                .password(passwordEncoder.encode(userDto.getPassword()))
                 .surname(userDto.getSurname())
                 .role(role)
                 .build();
+
+//        user.setPassword();
 
 //        user.setRole(role);
 
